@@ -1,6 +1,4 @@
-import { useState } from "react";
-import reactLogo from "./assets/react.svg";
-import viteLogo from "/vite.svg";
+import { useState, useEffect } from "react";
 import SearchBar from "./components/SearchBar";
 import CurrentWeather from "./components/CurrentWeather";
 import DailyForecast from "./components/DailyForecast";
@@ -12,6 +10,28 @@ function App() {
   const [searchInput, setSearchInput] = useState("");
   const [weatherData, setWeatherData] = useState(null);
 
+  useEffect(() => {
+    if (!navigator.geolocation) {
+      console.log("Geolocation is not supported by this browser");
+      return;
+    }
+    navigator.geolocation.getCurrentPosition((position) => {const {latitude, longitude} = position.coords;
+  
+    loadWeatherByCoords(latitude, longitude)});
+  }, []);
+
+  const loadWeatherByCoords = async (lat, long, location) => {
+    const weather = await getWeather(lat, long);
+    console.log(weather);
+    setWeatherData({
+      city: location.name,
+      country: location.country,
+      ...weather,
+    });
+  }
+
+ 
+  
   const handleInputChange = (e) => {
     setSearchInput(e.target.value);
   };
@@ -19,27 +39,23 @@ function App() {
   const handleSearchSubmit = async (e) => {
     e.preventDefault();
     const location = await getCoordinates(searchInput);
-
-    if (!location) throw new Error("City not found");
-    const weather = await getWeather(location.latitude, location.longitude);
-    console.log(weather);
-    setWeatherData({
-      city: location.name,
-      country: location.country,
-      ...weather,
-    });
+    loadWeatherByCoords(location.latitude, location.longitude, location);
+    setSearchInput("");
   };
   return (
-    <div className="min-h-screen flex flex-col">
-      <nav className="border-b p-4">
-        <div>Logo</div>
-        <div>App Name</div>
+    <div className="min-h-screen">
+      <nav className="flex justify-between border-b p-4 mb-6">
+        <div className="flex space-x-4">
+          <div>Logo</div>
+          <div>App Name</div>
+        </div>
+
         <div>
           <UnitToggle />
         </div>
       </nav>
 
-      <main className="flex-1 flex flex-col items-center space-y-6">
+      <main className="flex flex-col items-center space-y-6">
         <h1 className="text-2xl font-semibold text-center">
           How's the sky looking today?
         </h1>
