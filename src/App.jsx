@@ -4,44 +4,45 @@ import CurrentWeather from "./components/CurrentWeather";
 import DailyForecast from "./components/DailyForecast";
 import HourlyForecast from "./components/HourlyForecast";
 import UnitToggle from "./components/UnitToggle";
-import { getCoordinates, getWeather } from "./api/weather";
+import { getCoordinates, getWeather, reverseGeocode } from "./api/weather";
 
 function App() {
   const [searchInput, setSearchInput] = useState("");
-  const [weatherData, setWeatherData] = useState(null);
+  const [weather, setWeather] = useState(null);
+  const [location, setLocation] = useState(null);
 
   useEffect(() => {
     if (!navigator.geolocation) {
       console.log("Geolocation is not supported by this browser");
       return;
     }
-    navigator.geolocation.getCurrentPosition((position) => {const {latitude, longitude} = position.coords;
-  
-    loadWeatherByCoords(latitude, longitude)});
+    navigator.geolocation.getCurrentPosition((position) => {
+      const { latitude: lat, longitude: lon } = position.coords;
+      setLocation({ lat, lon, label: "Current Location",   });
+      loadWeather(lat, lon);
+    });
+
   }, []);
 
-  const loadWeatherByCoords = async (lat, long, location) => {
-    const weather = await getWeather(lat, long);
-    console.log(weather);
-    setWeatherData({
-      city: location.name,
-      country: location.country,
-      ...weather,
+  const loadWeather = async (lat, lon) => {
+    const data = await getWeather(lat, lon);
+    setWeather({
+      ...data
     });
   }
 
- 
-  
   const handleInputChange = (e) => {
     setSearchInput(e.target.value);
   };
 
   const handleSearchSubmit = async (e) => {
     e.preventDefault();
-    const location = await getCoordinates(searchInput);
-    loadWeatherByCoords(location.latitude, location.longitude, location);
+    const data = await getCoordinates(searchInput);
+    setLocation({ lat: data.latitude, lon: data.longitude, label: data.label, country: data.country});
+    loadWeather(data.latitude, data.longitude);
     setSearchInput("");
   };
+
   return (
     <div className="min-h-screen">
       <nav className="flex justify-between border-b p-4 mb-6">
@@ -68,13 +69,13 @@ function App() {
         </div>
         <div className="w-full max-w-6xl grid grid-cols-3 gap-8 mt-6 ">
           <div className="col-span-2 border-solid p-4">
-            <CurrentWeather data={weatherData} />
+            <CurrentWeather data={weather} location={location} />
           </div>
           <div className="border-solid row-span-3">
-            <HourlyForecast data={weatherData} />
+            <HourlyForecast data={weather} />
           </div>
           <div className="col-span-2">
-            <DailyForecast data={weatherData} />
+            <DailyForecast data={weather} />
           </div>
         </div>
       </main>

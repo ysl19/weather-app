@@ -1,4 +1,4 @@
-const CurrentWeather = ({ data }) => {
+const CurrentWeather = ({ data, location }) => {
   if (!data) return <div>No Data</div>;
   const formattedTime = new Date(data.current.time).toLocaleString();
   return (
@@ -6,7 +6,7 @@ const CurrentWeather = ({ data }) => {
       <div className="flex justify-between border rounded-xl mb-6 p-4 items-center">
         <div>
           <div>
-            {data.city}, {data.country}
+            {location ? `${location.label}${location.country ? `, ${location.country}` : ""}` : ""}
           </div>
           <div>{formattedTime}</div>
         </div>
