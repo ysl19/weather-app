@@ -4,7 +4,7 @@ import CurrentWeather from "./components/CurrentWeather";
 import DailyForecast from "./components/DailyForecast";
 import HourlyForecast from "./components/HourlyForecast";
 import UnitToggle from "./components/UnitToggle";
-import { getCoordinates, getWeather, reverseGeocode } from "./api/weather";
+import { getCoordinates, getWeather } from "./api/weather";
 
 function App() {
   const [searchInput, setSearchInput] = useState("");
@@ -18,7 +18,7 @@ function App() {
     }
     navigator.geolocation.getCurrentPosition((position) => {
       const { latitude: lat, longitude: lon } = position.coords;
-      setLocation({ lat, lon, label: "Current Location",   });
+      setLocation({ lat, lon, label: "Current Location", });
       loadWeather(lat, lon);
     });
 
@@ -38,44 +38,53 @@ function App() {
   const handleSearchSubmit = async (e) => {
     e.preventDefault();
     const data = await getCoordinates(searchInput);
-    setLocation({ lat: data.latitude, lon: data.longitude, label: data.label, country: data.country});
+    setLocation({ lat: data.latitude, lon: data.longitude, label: data.label, country: data.country });
     loadWeather(data.latitude, data.longitude);
     setSearchInput("");
   };
 
   return (
-    <div className="min-h-screen">
-      <nav className="flex justify-between border-b p-4 mb-6">
+    <div className="h-screen flex flex-col p-4 bg-[#02012b] text-white">
+      {/* Header */}
+      <nav className="flex justify-between  p-4 mb-4 flex-none">
         <div className="flex space-x-4">
           <div>Logo</div>
           <div>App Name</div>
         </div>
-
         <div>
           <UnitToggle />
         </div>
       </nav>
 
-      <main className="flex flex-col items-center space-y-6">
-        <h1 className="text-2xl font-semibold text-center">
-          How's the sky looking today?
-        </h1>
-        <div className="py-4 w-full max-w-xl">
-          <SearchBar
-            value={searchInput}
-            onChange={handleInputChange}
-            onSubmit={handleSearchSubmit}
-          />
-        </div>
-        <div className="w-full max-w-6xl grid grid-cols-3 gap-8 mt-6 ">
-          <div className="col-span-2 border-solid p-4">
+      {/* Main content */}
+        <main className="flex-1 grid grid-cols-12 p-4 overflow-hidden">
+          <h1 className="text-2xl font-semibold text-center mb-4 col-span-12">
+            How's the sky looking today?
+          </h1>
+          <div className="w-full max-w-xl mb-6 col-span-12 mx-auto">
+            <SearchBar
+              value={searchInput}
+              onChange={handleInputChange}
+              onSubmit={handleSearchSubmit}
+            />
+          </div>
+
+          {/* Grid */}
+          <div className="col-span-12 grid grid-cols-12 gap-4 h-full overflow-hidden">
+            {/* Current Weather */}
+            <div className="col-span-8">
             <CurrentWeather data={weather} location={location} />
-          </div>
-          <div className="border-solid row-span-3">
-            <HourlyForecast data={weather} />
-          </div>
-          <div className="col-span-2">
             <DailyForecast data={weather} />
+            </div>
+
+            {/* Hourly Forecast */}
+            <div className="col-span-4 h-full overflow-y-auto">
+              <HourlyForecast data={weather} />
+            </div>
+
+          {/* Daily Forecast */}
+          <div className="col-span-8">
+
           </div>
         </div>
       </main>

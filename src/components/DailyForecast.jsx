@@ -5,7 +5,7 @@ const DailyForecast = ({ data }) => {
     data.daily;
 
   return (
-    <div className="grid grid-cols-7 gap-4">
+    <div className="grid grid-cols-7 gap-4 mt-24">
       {time.map((day, index) => {
         const date = new Date(day);
         const dayName = date.toLocaleDateString("en-US", {
