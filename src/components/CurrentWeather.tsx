@@ -1,8 +1,3 @@
-<<<<<<< HEAD:src/components/CurrentWeather.jsx
-import bgTodayLarge from "../assets/images/bg-today-large.svg";
-
-const CurrentWeather = ({ data, location }) => {
-=======
 type Location = {
   label: string;
   country?: string;
@@ -25,20 +20,11 @@ type CurrentWeatherProps = {
 };
 
 const CurrentWeather = ({ data, location }: CurrentWeatherProps) => {
->>>>>>> 6cbe939 (convert to tsx):src/components/CurrentWeather.tsx
   if (!data) return <div>No Data</div>;
 
   const formattedTime = new Date(data.current.time).toLocaleString();
 
   return (
-<<<<<<< HEAD:src/components/CurrentWeather.jsx
-    <div className="flex flex-col " >
-      <div className="mb-8 p-4 bg-cover bg-center bg-no-repeat text-white flex  justify-between rounded-lg"
-        style={{ backgroundImage: `url(${bgTodayLarge})` }}>
-        <div className="flex flex-col justify-center">
-          <div className="text-3xl font-bold">
-            {location ? `${location.label}${location.country ? `, ${location.country}` : ""}` : ""}
-=======
     <div>
       <div className="flex justify-between border rounded-xl mb-6 p-4 items-center">
         <div>
@@ -46,17 +32,12 @@ const CurrentWeather = ({ data, location }: CurrentWeatherProps) => {
             {location
               ? `${location.label}${location.country ? `, ${location.country}` : ""}`
               : ""}
->>>>>>> 6cbe939 (convert to tsx):src/components/CurrentWeather.tsx
           </div>
 
           <div className="text-xl">{formattedTime}</div>
         </div>
-<<<<<<< HEAD:src/components/CurrentWeather.jsx
-        <div className="self-center text-8xl">{data.current.temperature_2m}°</div>
-=======
 
         <div>{data.current.temperature_2m}°</div>
->>>>>>> 6cbe939 (convert to tsx):src/components/CurrentWeather.tsx
       </div>
 
       <div className="flex justify-between gap-x-4">

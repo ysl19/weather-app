@@ -1,3 +1,5 @@
+import { getWeatherCodeInfo } from "../utils/weatherCode";
+
 type DailyWeatherData = {
   daily: {
     time: string[];
@@ -30,23 +32,35 @@ const DailyForecast = ({ data }: DailyForecastProps) => {
           weekday: "short",
         });
 
+        const weatherInfo = getWeatherCodeInfo(weather_code[index]);
+
         return (
           <div
             key={day}
-            className="p-4 border rounded-xl shadow-sm text-center"
+            className="p-4 border rounded-xl shadow-sm text-center bg-[#25253f] text-white"
           >
             {/* Day */}
             <div className="font-semibold">{dayName}</div>
 
             {/* Weather Icon */}
-            <div className="text-3xl my-2">
-              {weather_code[index]}
+            <div
+              className="text-3xl my-2"
+              title={weatherInfo.label}
+            >
+              {weatherInfo.icon}
+            </div>
+
+            {/* Weather Label */}
+            <div className="text-xs text-white/70 min-h-8">
+              {weatherInfo.label}
             </div>
 
             {/* High / Low */}
-            <div className="flex justify-between text-sm mt-2">
+            <div className="flex justify-between text-sm mt-3">
               <span>{temperature_2m_max[index]}°</span>
-              <span>{temperature_2m_min[index]}°</span>
+              <span className="text-white/60">
+                {temperature_2m_min[index]}°
+              </span>
             </div>
           </div>
         );
