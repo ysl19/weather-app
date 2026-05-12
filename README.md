@@ -1,16 +1,64 @@
-# React + Vite
+# Weather Intelligence Dashboard
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A full-stack weather intelligence dashboard built with React, TypeScript, Vite, Node.js, and Express. The application allows users to search for weather by city, use their current location, view hourly and daily forecasts, and receive an AI-style weather summary generated from real forecast data.
 
-Currently, two official plugins are available:
+This project was built to demonstrate full-stack application architecture, typed API integration, reusable React components, backend API design, and intelligent weather recommendation logic.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+---
 
-## React Compiler
+## Features
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+- Search weather by city
+- Use browser geolocation to load weather for the user's current location
+- Default weather view for Dallas, Texas
+- Current weather conditions
+- Hourly forecast
+- Daily forecast
+- Weather condition icons based on Open-Meteo weather codes
+- AI-style weather assistant summary
+- Full-stack architecture with a dedicated backend API
+- TypeScript across frontend and backend
+- Loading and error state handling
+- Responsive dashboard layout
 
-## Expanding the ESLint configuration
+---
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+## Tech Stack
+
+### Frontend
+
+- React
+- TypeScript
+- Vite
+- Tailwind CSS
+
+### Backend
+
+- Node.js
+- Express
+- TypeScript
+- CORS
+
+### APIs
+
+- Open-Meteo Forecast API
+- Open-Meteo Geocoding API
+- Browser Geolocation API
+
+---
+
+## Architecture
+
+```txt
+React / Vite Frontend
+        |
+        v
+Frontend API Client
+src/api/weather.ts
+        |
+        v
+Express Backend API
+server/src/routes/weather.ts
+        |
+        v
+Open-Meteo APIs
